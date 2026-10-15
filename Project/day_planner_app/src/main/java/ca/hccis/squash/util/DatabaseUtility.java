@@ -65,7 +65,7 @@ public class DatabaseUtility {
                     userName,
                     password);
         } catch (SQLException ex) {
-            System.out.println("SQL exception happned!");
+            System.out.println("SQL exception happened!");
             throw ex;
         }
 
