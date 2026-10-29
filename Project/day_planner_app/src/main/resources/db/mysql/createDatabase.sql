@@ -22,19 +22,20 @@ CREATE TABLE events (
                         eventEndDate   VARCHAR(10)  NOT NULL,
                         eventStartTime SMALLINT     NOT NULL,
                         eventEndTime   SMALLINT     NOT NULL,
+                        eventColour    VARCHAR(50)  NULL,
                         eventName      VARCHAR(100) NOT NULL,
                         FOREIGN KEY (eventParentId) REFERENCES events(eventId)
 );
 
 INSERT INTO events
-(eventId, eventParentId, eventType, eventSubtype, eventStartDate, eventEndDate, eventStartTime, eventEndTime, eventName)
+(eventId, eventParentId, eventType, eventSubtype, eventStartDate, eventEndDate, eventStartTime, eventEndTime, eventColour,eventName)
 VALUES
-    (1, NULL, 'Conference', NULL,          '2026-10-15', '2026-10-15', 0900,  0930,   'Tech Summit'),
-    (2, 1,    'Conference', 'Keynote',     '2026-10-15', '2026-10-15', 0930, 1000,'Opening Keynote'),
-    (3, 1,    'Conference', 'Workshop',    '2026-10-15', '2026-10-15',1015, 1130,  'Intro to SQL Workshop'),
-    (4, NULL, 'Meeting',    NULL,          '2026-11-03', '2026-11-3',  0830, 1000,   'Project Planning'),
-    (5, NULL, 'Birthday',   NULL,          '2026-12-20', '2026-12-20', 1730, 2000,'Alex''s Birthday Dinner'),
-    (6, NULL, 'Rec', 'Basketball', '2027-03-12', '2027-03-15', 1000, 1200, 'Basketball Tryouts');
+    (1, NULL, 'Conference', NULL,          '2026-10-15', '2026-10-15', 0900,  0930, 'Blue', 'Tech Summit'),
+    (2, 1,    'Conference', 'Keynote',     '2026-10-15', '2026-10-15', 0930, 1000, 'Blue','Opening Keynote'),
+    (3, 1,    'Conference', 'Workshop',    '2026-10-15', '2026-10-15',1015, 1130, 'Blue',  'Intro to SQL Workshop'),
+    (4, NULL, 'Meeting',    NULL,          '2026-11-03', '2026-11-3',  0830, 1000, NULL,   'Project Planning'),
+    (5, NULL, 'Birthday',   NULL,          '2026-12-20', '2026-12-20', 1730, 2000, Null,'Alex''s Birthday Dinner'),
+    (6, NULL, 'Rec', 'Basketball', '2027-03-12', '2027-03-15', 1000, 1200, 'Red','Basketball Tryouts');
 
 # ALTER TABLE SkillsAssessmentSquashTechnical
 #     ADD PRIMARY KEY (id);

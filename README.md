@@ -24,11 +24,11 @@ eventId	int	ID for the event on the calendar	<br/>
 eventParentId	int	ID of the parent event for events with a subtype	<br/>
 eventType	String	Type of event	<br/>
 eventSubtype	String	Subtype of event	<br/>
-eventYear	short	Year of the event	<br/>
-eventMonth	byte	Month of the event	<br/>
-eventDay	byte	Day of the month of the event	<br/>
-eventHour	byte	Hour of the event	<br/>
-eventMinute	byte	Minute of the event	<br/>
+eventStartDate	String	Start date of the event	<br/>
+eventEndDate	String	End date of the event	<br/>
+eventStartTime	byte	Time of when the event starts	<br/>
+eventEndTime	byte	Tome of when the event ends	<br/>
+eventColour	String	Colour of the event	<br/>
 eventName	String	Name of event	<br/>
 
 ## Calculation ##
