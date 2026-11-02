@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title id="pageTitle">Events by Month Report</title>
+</head>
+<body>
+<style scoped="scoped">input:not(.hidden), select {
+    display: inline-block;
+    float: right
+}
+
+label {
+    margin-right: 8px
+}</style>
+<nav th:replace="fragments/navHeader :: navbar"></nav>
+
+<div class="container has-text-centered">
+    <h2 class="title is-2" th:text="#{label.report.events.month}">Events by Month</h2>
+
+    <form th:action="@{/report/events/month/submit}" method="post" class="wbb"
+          style="display:inline-block;text-align:left!important">
+        <label>Year: </label>
+        <input type="number" th:field="${reportInput.year}" min="2000" max="2100" required="required"/>
+        <br/><br/>
+        <label>Month: </label>
+        <select th:field="${reportInput.month}">
+            <option th:each="m : ${#numbers.sequence(1,12)}" th:value="${m}" th:text="${m}"></option>
+        </select>
+        <br/><br/>
+        <label>Event type (optional): </label>
+        <select th:field="${reportInput.eventType}">
+            <option value="">All</option>
+            <option th:each="t : ${eventTypes}" th:value="${t}" th:text="${t}"></option>
+        </select>
+        <br/>
+        <button style="display:block;margin-top:24px!important" class="centered">Run Report</button>
+    </form>
+
+    <p class="cd" th:if="${error}" th:text="${error}"></p>
+
+    <!-- Results (only after the report has been run) -->
+    <div th:if="${reportInput.ran}">
+        <p>Total events: <b th:text="${reportInput.total}">0</b></p>
+        <p th:if="${reportInput.savedFileName}">Saved to <span th:text="${reportInput.savedFileName}"></span></p>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(reportInput.rows)}">
+        <div style="max-width:800px;margin:auto;background:#fff;padding:12px">
+            <canvas id="perDayChart" height="110"></canvas>
+        </div>
+        <br/>
+        <table class="wbb centered">
+            <thead>
+            <tr>
+                <th>Start</th><th>End</th><th>Time</th><th>Type</th><th>Subtype</th><th>Name</th><th>Parent event</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${reportInput.rows}">
+                <td th:text="${item.startDate}"></td>
+                <td th:text="${item.endDate}"></td>
+                <td th:text="${item.startTimeText} + '-' + ${item.endTimeText}"></td>
+                <td th:text="${item.eventType}"></td>
+                <td th:text="${item.eventSubtype}"></td>
+                <td th:text="${item.eventName}"></td>
+                <td th:text="${item.parentName}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p th:if="${reportInput.ran and #lists.isEmpty(reportInput.rows)}">No events found.</p>
+</div>
+
+<br/>
+<footer th:replace="fragments/footer :: footer"></footer>
+
+<!-- Chart.js is already loaded by fragments/head -->
+<script th:inline="javascript" th:if="${not #lists.isEmpty(reportInput.rows)}">
+    const labels = /*[[${reportInput.chartLabels}]]*/ [];
+    const values = /*[[${reportInput.chartValues}]]*/ [];
+    new Chart(document.getElementById('perDayChart'), {
+        type: 'bar',
+        data: {labels: labels, datasets: [{label: 'Events per day', data: values, backgroundColor: '#87CEEB'}]},
+        options: {
+            scales: {
+                y: {beginAtZero: true, ticks: {precision: 0}},
+                x: {title: {display: true, text: 'Day of month'}}
+            }
+        }
+    });
+</script>
+</body>
+</html>

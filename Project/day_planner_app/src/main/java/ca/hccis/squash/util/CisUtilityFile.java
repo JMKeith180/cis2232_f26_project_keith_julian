@@ -41,4 +41,21 @@ public class CisUtilityFile {
         }
 
     }
+    /**
+     * Write report lines to c:\cis2232\ using the name pattern ReportName + yyyyMMddHHmm + .txt
+     * (e.g. EventsByMonth202611011537.txt).
+     *
+     * @return the full file name written, or null if the file could not be written
+     */
+    public static String writeReportLines(String reportName, java.util.List<String> lines) {
+        String fullName = FOLDER_NAME + reportName + CisUtility.getCurrentDate("yyyyMMddHHmm") + ".txt";
+        try {
+            Files.createDirectories(Paths.get(FOLDER_NAME));
+            Files.write(Paths.get(fullName), lines);
+            return fullName;
+        } catch (IOException e) {
+            System.out.println("CisUtilityFile exception with file: " + fullName + " - " + e.getMessage());
+            return null;
+        }
+    }
 }
